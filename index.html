@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APAP — Associação de Proteção dos Animais de Penápolis</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --red: #c0392b;
+    --cream: #f9f5f0;
+    --warm-gray: #e8e2da;
+    --text: #1a1a1a;
+    --muted: #6b6560;
+    --white: #ffffff;
+    --border: rgba(26,39,68,0.12);
+    --shadow: 0 4px 24px rgba(26,39,68,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 68px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo-text span { color: var(--red); }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+
+  .nav-cta {
+    background: var(--red) !important;
+    color: var(--white) !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.9; background: var(--red) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--navy);
+    padding: 6rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(192,57,43,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-paws {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0.06;
+  }
+
+  .hero-paws svg {
+    position: absolute;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(192,57,43,0.18);
+    color: #f1a59a;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    border: 1px solid rgba(192,57,43,0.3);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.2rem;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: #f1a59a;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1.6rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.3);
+  }
+
+  .btn-outline:hover { background: rgba(255,255,255,0.08); }
+
+  .btn-navy {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .btn-navy:hover { opacity: 0.88; }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.9rem;
+    color: var(--navy);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ─── CONTENT WRAPPER ─── */
+  .content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--navy);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .section-header p {
+    margin-top: 0.6rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 560px;
+  }
+
+  /* ─── ANIMAL GRID ─── */
+  .animal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .animal-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .animal-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+
+  .animal-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--warm-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+
+  .animal-body {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .animal-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .badge-lost { background: #fff3cd; color: #856404; }
+  .badge-adopt { background: #d4edda; color: #155724; }
+  .badge-found { background: #cce5ff; color: #004085; }
+  .badge-dog { background: #e2e3e5; color: #383d41; }
+  .badge-cat { background: #f8d7da; color: #721c24; }
+  .badge-other { background: #e2e3e5; color: #383d41; }
+
+  .animal-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+  }
+
+  .animal-info {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .animal-card .btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+
+  /* ─── FILTERS ─── */
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.45rem 1rem;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: var(--text);
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  /* ─── FORM ─── */
+  .form-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  input, select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    padding: 0.65rem 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--cream);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--navy);
+    background: var(--white);
+  }
+
+  textarea { resize: vertical; min-height: 90px; }
+
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--cream);
+  }
+
+  .upload-area:hover { border-color: var(--navy); background: var(--white); }
+
+  .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+  .upload-area p { font-size: 0.85rem; color: var(--muted); }
+
+  .form-submit {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  /* ─── DONATION ─── */
+  .donation-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .donation-info {
+    padding: 0.5rem 0;
+  }
+
+  .donation-info h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+
+  .donation-info p {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .pix-box {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 2rem;
+    color: var(--white);
+    text-align: center;
+  }
+
+  .pix-box h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .pix-key {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    word-break: break-all;
+    letter-spacing: 0.03em;
+  }
+
+  .amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .amount-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 0.6rem;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .amount-btn:hover, .amount-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+  }
+
+  .impact-list {
+    list-style: none;
+    margin-top: 1.5rem;
+  }
+
+  .impact-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .impact-list li:last-child { border-bottom: none; }
+
+  .impact-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #eef4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  .impact-list strong { display: block; color: var(--navy); font-weight: 600; }
+  .impact-list span { color: var(--muted); font-size: 0.82rem; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+    padding: 0.2rem;
+  }
+
+  .modal h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+  }
+
+  .modal-animal-info {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-option {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .contact-option:hover { border-color: var(--navy); background: #f5f7ff; }
+
+  .contact-option-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .co-whatsapp { background: #dcf8c6; }
+  .co-email { background: #e3eeff; }
+  .co-phone { background: #fff0e6; }
+
+  .contact-option-label { font-size: 0.82rem; color: var(--muted); }
+  .contact-option-value { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+
+  /* ─── SUCCESS TOAST ─── */
+  .toast {
+    display: none;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #155724;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 300;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .toast.show { display: block; animation: slideIn 0.3s ease; }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* ─── ABOUT ─── */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    font-weight: 900;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .about-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .about-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .ac-red { background: #fde8e8; }
+  .ac-navy { background: #e6eaf5; }
+  .ac-green { background: #e8f5ea; }
+
+  .about-card h4 {
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+  }
+
+  .about-card p {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.65);
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-logo span { color: #f47d70; }
+
+  footer p { font-size: 0.85rem; line-height: 1.65; }
+
+  .footer-col h5 {
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .footer-col ul li a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 1.5rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .donation-layout { grid-template-columns: 1fr; }
+    .about-layout { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+    .stats-bar { gap: 2rem; }
+    .animal-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+
+  .empty-state .empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+
+  .empty-state h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--navy);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ─── PAWS ANIMATION ─── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+  }
+
+  .paw-float { animation: float 4s ease-in-out infinite; }
+  .paw-float-2 { animation: float 5s ease-in-out infinite 1s; }
+  .paw-float-3 { animation: float 6s ease-in-out infinite 2s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showSection('home')">
+    <span class="nav-logo-text">AP<span>A</span>P</span>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showSection('lost')">Animais Perdidos</a></li>
+    <li><a onclick="showSection('adopt')">Adoção</a></li>
+    <li><a onclick="showSection('register-lost')">Cadastrar Animal</a></li>
+    <li><a onclick="showSection('about')">Sobre</a></li>
+    <li><a class="nav-cta" onclick="showSection('donate')">❤ Doar</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="section-home" class="section active">
+  <div class="hero">
+    <div class="hero-paws">
+      <svg width="80" height="80" style="top:10%;left:5%" class="paw-float" viewBox="0 0 80 80">
+        <circle cx="30" cy="20" r="8" fill="white"/><circle cx="50" cy="20" r="8" fill="white"/>
+        <circle cx="18" cy="35" r="6" fill="white"/><circle cx="62" cy="35" r="6" fill="white"/>
+        <ellipse cx="40" cy="55" rx="16" ry="20" fill="white"/>
+      </svg>
+      <svg width="60" height="60" style="top:20%;right:8%" class="paw-float-2" viewBox="0 0 80 80">
+        <circle cx="30" cy="20" r="8" fill="white"/><circle cx="50" cy="20" r="8" fill="white"/>
+        <circle cx="18" cy="35" r="6" fill="white"/><circle cx="62" cy="35" r="6" fill="white"/>
+        <ellipse cx="40" cy="55" rx="16" ry="20" fill="white"/>
+      </svg>
+      <svg width="45" height="45" style="bottom:20%;left:12%" class="paw-float-3" viewBox="0 0 80 80">
+        <circle cx="30" cy="20" r="8" fill="white"/><circle cx="50" cy="20" r="8" fill="white"/>
+        <circle cx="18" cy="35" r="6" fill="white"/><circle cx="62" cy="35" r="6" fill="white"/>
+        <ellipse cx="40" cy="55" rx="16" ry="20" fill="white"/>
+      </svg>
+    </div>
+    <div class="hero-badge">🐾 Penápolis, SP</div>
+    <h1>Proteção, <em>amor</em> e<br>um lar para cada animal</h1>
+    <p>A APAP conecta animais perdidos com seus donos e encontra famílias amorosas para quem precisa de adoção. Faça a diferença hoje.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" onclick="showSection('lost')">🔍 Ver animais perdidos</a>
+      <a class="btn btn-outline" onclick="showSection('adopt')">🏠 Quero adotar</a>
+    </div>
+  </div>
+
+
+
+  <!-- Quick actions -->
+  <div class="content">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1rem;">
+      <div class="animal-card" onclick="showSection('lost')" style="padding:2rem;text-align:center;cursor:pointer;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🐕</div>
+        <h3 style="font-family:'Fraunces',serif;color:var(--navy);font-size:1.15rem;margin-bottom:0.4rem;font-weight:700;">Perdeu seu animal?</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">Cadastre aqui para que outras pessoas possam ajudar a encontrá-lo.</p>
+        <span class="btn btn-navy" style="display:inline-flex;font-size:0.85rem;padding:0.55rem 1.2rem;">Cadastrar animal perdido</span>
+      </div>
+      <div class="animal-card" onclick="showSection('lost')" style="padding:2rem;text-align:center;cursor:pointer;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">👀</div>
+        <h3 style="font-family:'Fraunces',serif;color:var(--navy);font-size:1.15rem;margin-bottom:0.4rem;font-weight:700;">Encontrou um animal?</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">Verifique se o dono já o cadastrou ou registre um avistamento.</p>
+        <span class="btn btn-navy" style="display:inline-flex;font-size:0.85rem;padding:0.55rem 1.2rem;">Ver animais cadastrados</span>
+      </div>
+      <div class="animal-card" onclick="showSection('adopt')" style="padding:2rem;text-align:center;cursor:pointer;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🏡</div>
+        <h3 style="font-family:'Fraunces',serif;color:var(--navy);font-size:1.15rem;margin-bottom:0.4rem;font-weight:700;">Adote um amigo</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">Conheça nossos animais disponíveis para adoção responsável.</p>
+        <span class="btn btn-navy" style="display:inline-flex;font-size:0.85rem;padding:0.55rem 1.2rem;">Ver para adoção</span>
+      </div>
+      <div class="animal-card" onclick="showSection('donate')" style="padding:2rem;text-align:center;cursor:pointer;border:2px solid var(--red);">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">❤️</div>
+        <h3 style="font-family:'Fraunces',serif;color:var(--navy);font-size:1.15rem;margin-bottom:0.4rem;font-weight:700;">Apoie a APAP</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">Sua doação mantém nosso trabalho vivo. Cada real faz diferença.</p>
+        <span class="btn btn-primary" style="display:inline-flex;font-size:0.85rem;padding:0.55rem 1.2rem;">Fazer doação</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ANIMAIS PERDIDOS ═══════════════ -->
+<div id="section-lost" class="section">
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;">
+      <div class="section-header" style="margin-bottom:0;">
+        <div class="section-tag">🔍 Mural de busca</div>
+        <h2>Animais Perdidos</h2>
+        <p>Veja os animais cadastrados ou registre um que você perdeu.</p>
+      </div>
+      <a class="btn btn-primary" onclick="showSection('register-lost')">+ Cadastrar meu animal</a>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterAnimals(this,'all','lost')">Todos</button>
+      <button class="filter-btn" onclick="filterAnimals(this,'dog','lost')">Cães</button>
+      <button class="filter-btn" onclick="filterAnimals(this,'cat','lost')">Gatos</button>
+    </div>
+
+    <div class="animal-grid" id="lost-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADOÇÃO ═══════════════ -->
+<div id="section-adopt" class="section">
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;">
+      <div class="section-header" style="margin-bottom:0;">
+        <div class="section-tag">🏠 Adoção responsável</div>
+        <h2>Animais para Adoção</h2>
+        <p>Todos castrados, vacinados e prontos para encontrar uma família.</p>
+      </div>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterAnimals(this,'all','adopt')">Todos</button>
+      <button class="filter-btn" onclick="filterAnimals(this,'dog','adopt')">Cães</button>
+      <button class="filter-btn" onclick="filterAnimals(this,'cat','adopt')">Gatos</button>
+    </div>
+
+    <div class="animal-grid" id="adopt-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CADASTRAR ANIMAL PERDIDO ═══════════════ -->
+  <div id="section-register-lost" class="section">
+    <div class="content">
+      <div class="section-header">
+        <div class="section-tag">📋 Registrar ocorrência</div>
+        <h2>Cadastrar Animal Perdido</h2>
+        <p>Preencha as informações para que possamos ajudar a encontrá-lo.</p>
+      </div>
+
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome do animal</label>
+            <input type="text" placeholder="Ex: Rex, Mimi…" id="reg-name">
+          </div>
+          <div class="form-group">
+            <label>Espécie</label>
+            <select id="reg-species">
+              <option value="">Selecione…</option>
+              <option>Cão</option>
+              <option>Gato</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Raça</label>
+            <input type="text" placeholder="Ex: Vira-lata, Golden…" id="reg-breed">
+          </div>
+          <div class="form-group">
+            <label>Cor / Pelagem</label>
+            <input type="text" placeholder="Ex: Caramelo com branco" id="reg-color">
+          </div>
+          <div class="form-group">
+            <label>Porte</label>
+            <select id="reg-size">
+              <option value="">Selecione…</option>
+              <option value="Pequeno">Pequeno</option>
+              <option value="Médio">Médio</option>
+              <option value="Grande">Grande</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data que desapareceu</label>
+            <input type="date" id="reg-date">
+          </div>
+          <div class="form-group full">
+            <label>Último local visto</label>
+            <input type="text" placeholder="Ex: Rua das Flores, bairro Centro, Penápolis" id="reg-location">
+          </div>
+          <div class="form-group full">
+            <label>Características especiais</label>
+            <textarea placeholder="Descreva marcas, comportamento, coleira, chip…" id="reg-desc"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Foto do animal</label>
+            <div class="upload-area" onclick="document.getElementById('reg-photo').click()">
+  <!-- Adicionamos o elemento de preview aqui -->
+            <img id="photo-preview" src="" alt="Preview" style="display:none; max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px;">
+            
+            <div id="upload-placeholder">
+              <div class="upload-icon">📷</div>
+              <p>Clique para enviar uma foto (JPG ou PNG)</p>
+            </div>
+            
+            <input type="file" accept="image/*" style="display:none" id="reg-photo" onchange="previewImage(event)">
+          </div>
+          </div>
+          <div class="form-group">
+            <label>Seu nome</label>
+            <input type="text" placeholder="Nome do responsável" id="reg-owner">
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" placeholder="(18) 9 0000-0000" id="reg-phone">
+          </div>
+          <!-- <div class="form-group full">
+            <label>E-mail (opcional)</label>
+            <input type="email" placeholder="seu@email.com" id="reg-email">
+          </div> -->
+        </div>
+        <div class="form-submit">
+          <button class="btn btn-primary submit-btn" onclick="submitLost()">Publicar cadastro</button>
+          <button class="btn" style="border:1.5px solid var(--border);" onclick="showSection('lost')">Cancelar</button>
+        </div>
+        </div>
+    </div>
+  </div>
+
+<!-- ═══════════════ SOBRE ═══════════════ -->
+<div id="section-about" class="section">
+  <div class="content">
+    <div class="about-layout">
+      <div class="about-text">
+        <div class="section-tag">💙 Nossa missão</div>
+        <h2>Há mais de 8 anos cuidando dos animais de Penápolis</h2>
+        <p>A APAP — Associação de Proteção dos Animais de Penápolis — é uma organização sem fins lucrativos fundada por voluntários apaixonados pelo bem-estar animal.</p>
+        <p>Nosso trabalho inclui resgates de animais em situação de risco, tratamento veterinário, campanhas de castração, adoção responsável e a busca de animais perdidos.</p>
+        <p>Tudo isso só é possível graças ao apoio da comunidade de Penápolis e região. Cada doação, cada voluntário e cada adoção fazem parte dessa história.</p>
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+          <a class="btn btn-primary" onclick="showSection('donate')">❤ Quero apoiar</a>
+          <a class="btn" style="border:1.5px solid var(--border);" href="mailto:apapenapolis@gmail.com" target="_blank">💬 Fale conosco</a>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-card-icon ac-red">🐾</div>
+          <div>
+            <h4>Resgate e cuidado</h4>
+            <p>Atendemos chamados de animais abandonados ou em perigo, garantindo tratamento e abrigo seguros.</p>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon ac-navy">💉</div>
+          <div>
+            <h4>Saúde animal</h4>
+            <p>Realizamos campanhas de vacinação, vermifugação e castrações a preço acessível ou gratuitas.</p>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon ac-green">🏡</div>
+          <div>
+            <h4>Adoção responsável</h4>
+            <p>Cada adoção passa por entrevista e acompanhamento pós-adoção para garantir o bem-estar do animal.</p>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-icon ac-red">🔍</div>
+          <div>
+            <h4>Busca de animais</h4>
+            <p>Operamos uma rede de voluntários para localizar animais desaparecidos em Penápolis e região.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DOAÇÃO ═══════════════ -->
+<div id="section-donate" class="section">
+  <div class="content">
+    <div class="section-header">
+      <div class="section-tag">❤ Faça a diferença</div>
+      <h2>Apoie a APAP</h2>
+      <p>Sua doação mantém nossos animais alimentados, saudáveis e seguros.</p>
+    </div>
+
+    <div class="donation-layout">
+      <div class="donation-info">
+        <h3>Por que sua doação importa</h3>
+        <p>A APAP é mantida 100% por doações e voluntários. Não recebemos repasse de prefeitura ou governo. Cada real doado é diretamente aplicado no cuidado dos animais.</p>
+
+        <ul class="impact-list">
+          <li>
+            <div class="impact-icon">🍖</div>
+            <div><strong>R$ 30</strong><span>Alimenta um animal por um mês inteiro</span></div>
+          </li>
+          <li>
+            <div class="impact-icon">💉</div>
+            <div><strong>R$ 80</strong><span>Cobre a vacinação completa de um animal</span></div>
+          </li>
+          <li>
+            <div class="impact-icon">✂️</div>
+            <div><strong>R$ 200</strong><span>Financia uma castração completa</span></div>
+          </li>
+          <li>
+            <div class="impact-icon">🏥</div>
+            <div><strong>R$ 500</strong><span>Ajuda a custear uma cirurgia de emergência</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="pix-box">
+          <h4>Doe via Pix</h4>
+          <p style="font-size:0.85rem;opacity:0.75;margin-top:0.3rem;">Rápido, seguro e sem taxas</p>
+
+          <div id="custom-amount-wrap" style="display:none;margin-bottom:1rem;">
+            <input type="number" placeholder="Digite o valor (R$)" style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);color:#fff;width:100%;" id="custom-amount">
+          </div>
+
+          <div style="font-size:0.75rem;opacity:0.65;text-align:left;margin-bottom:0.4rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Chave Pix (CNPJ)</div>
+          <div class="pix-key">01.225.914/0001-13</div>
+          <p style="font-size:0.78rem;opacity:0.65;margin-bottom:1.25rem;">APAP — Associação de Proteção dos Animais de Penápolis</p>
+
+          <button class="btn" style="width:100%;justify-content:center;background:var(--red);color:#fff;border:none;" onclick="copyPix()">📋 Copiar chave Pix</button>
+        </div>
+
+        <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:1.5rem;margin-top:1rem;">
+          <h4 style="font-family:'Fraunces',serif;color:var(--navy);font-size:1rem;margin-bottom:0.75rem;font-weight:700;">Outras formas de ajudar</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
+            <li><a target="_blank" style="color:var(--navy);font-size:0.875rem;text-decoration:none;display:flex;align-items:center;gap:0.5rem;">📦 <span>Doação de ração, remédios e materiais</span></a></li>
+            <li><a target="_blank" style="color:var(--navy);font-size:0.875rem;text-decoration:none;display:flex;align-items:center;gap:0.5rem;">🙋 <span>Ser voluntário da APAP</span></a></li>
+            <li><a target="_blank" style="color:var(--navy);font-size:0.875rem;text-decoration:none;display:flex;align-items:center;gap:0.5rem;">🏠 <span>Lar temporário para animais em reabilitação</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL CONTATO ─── -->
+<div class="modal-overlay" id="contact-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modal-title">Entrar em contato</h3>
+    <div class="modal-animal-info" id="modal-info"></div>
+    <div class="contact-options">
+      <a class="contact-option" href="mailto:apap@apappenapolis.org.br">
+        <div class="contact-option-icon co-email">✉️</div>
+        <div>
+          <div class="contact-option-label">E-mail</div>
+          <div class="contact-option-value">apap@apappenapolis.org.br</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">AP<span>A</span>P</div>
+      <p>Associação de Proteção dos Animais de Penápolis. Uma ONG fundada com amor e dedicada a fazer a diferença na vida dos animais e das pessoas.</p>
+      <p style="margin-top:0.75rem;">📍 Penápolis, São Paulo — Brasil</p>
+    </div>
+    <div class="footer-col">
+      <h5>Navegação</h5>
+      <ul>
+        <li><a onclick="showSection('lost')">Animais Perdidos</a></li>
+        <li><a onclick="showSection('adopt')">Adoção</a></li>
+        <li><a onclick="showSection('register-lost')">Cadastrar Animal</a></li>
+        <li><a onclick="showSection('about')">Sobre a APAP</a></li>
+        <li><a onclick="showSection('donate')">Fazer Doação</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contato</h5>
+      <ul>
+        <li><a href="mailto:apap@apappenapolis.org.br">E-mail</a></li>
+        <li><a href="https://instagram.com/apappenapolis" target="_blank">Instagram</a></li>
+        <li><a href="https://facebook.com/apappenapolis" target="_blank">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 APAP — Todos os direitos reservados</span>
+    <span>CNPJ: 01.225.914/0001-13</span>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Importa o SDK do Supabase
+const { createClient } = supabase;
+
+const _supabase = createClient(
+  'https://sdmcrcewlctnamvloryh.supabase.co', 
+  'sb_publishable_v7o90lAtxHKUf-I2HU0vjA_3esZ8B2v' 
+);
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('photo-preview');
+    const placeholder = document.getElementById('upload-placeholder');
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            // Define a origem da imagem como o resultado da leitura
+            preview.src = e.target.result;
+            // Mostra a imagem e esconde o texto original
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        }
+
+        reader.readAsDataURL(file);
+    } else {
+        // Caso o usuário cancele a seleção, volta ao estado original
+        preview.src = "";
+        preview.style.display = 'none';
+        placeholder.style.display = 'block';
+    }
+}
+
+async function fetchApprovedAnimals() {
+  const [resLost, resAdopt] = await Promise.all([
+    _supabase.from('animals').select('*').neq('status', 'pending'),
+    _supabase.from('adoption_animals').select('*').neq('status', 'pending')
+  ]);
+
+  if (!resLost.error && resLost.data) {
+    // Mapeia os dados da tabela 'animals' e garante que o tipo seja 'lost'
+    extraLost = resLost.data.map(a => ({
+      ...a,
+      type: 'lost', 
+      desc: a.description || a.breed || '',
+      owner: a.owner_name,
+      phone: a.owner_phone
+    }));
+  }
+
+  if (!resAdopt.error && resAdopt.data) {
+    // Mapeia os dados da tabela 'adoption_animals' e garante que o tipo seja 'adopt'
+    extraAdopt = resAdopt.data.map(a => ({
+      ...a,
+      type: 'adopt',
+      desc: `${a.age || ''} - ${a.description || ''}`,
+      owner: 'APAP', 
+      phone: '(18) 99999-9999'
+    }));
+  }
+
+  // Atualiza os grids imediatamente após carregar
+  renderGrid('lost-grid', [...lostAnimals, ...extraLost]);
+  renderGrid('adopt-grid', [...adoptAnimals, ...extraAdopt]);
+}
+
+fetchApprovedAnimals(); 
+
+// Dados Iniciais
+const lostAnimals = [
+];
+
+const adoptAnimals = [
+];
+
+let extraLost = [];
+let extraAdopt = [];
+
+// Funções de Interface
+function renderCard(a) {
+  const isLost = a.type === 'lost';
+  const badgeStatus = `<span class="badge ${isLost ? 'badge-lost' : 'badge-adopt'}">${isLost ? 'Perdido' : 'Adoção'}</span>`;
+  const badgeSpecies = `<span class="badge badge-dog">${a.species === 'dog' ? 'Cão' : 'Gato'}</span>`;
+  
+  // Linha de informação principal
+  const infoLine = isLost ? `📍 ${a.location || 'Local não informado'}` : `✨ ${a.breed || 'SRD'}`;
+  
+  // Badges de saúde (apenas para adoção)
+  let healthBadges = '';
+  if (!isLost) {
+    if (a.neutered) healthBadges += ' <small>✂️ Castrado</small>';
+    if (a.vaccinated) healthBadges += ' <small>💉 Vacinado</small>';
+  }
+
+  // Tratamento da imagem
+  const imageContent = a.image_url 
+    ? `<img src="${a.image_url}" class="animal-img" alt="${a.name}" style="object-fit: cover;">`
+    : `<div class="animal-img">${a.species === 'dog' ? '🐕' : '🐱'}</div>`;
+
+  // Prepara o objeto completo para ser enviado ao modal via string
+  const animalDataJson = encodeURIComponent(JSON.stringify(a));
+
+  return `
+    <div class="animal-card">
+      ${imageContent}
+      <div class="animal-body">
+        <div class="animal-badges">${badgeStatus}${badgeSpecies}</div>
+        <div class="animal-name">${a.name}</div>
+        <div class="animal-info">
+            ${infoLine}${healthBadges}
+            <br><span style="font-size:0.82rem;color:#888;">${(a.description || a.desc || '').substring(0,60)}...</span>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('${animalDataJson}')">
+            ${isLost ? 'Encontrei!' : 'Quero Adotar'}
+        </button>
+      </div>
+    </div>`;
+}
+function renderGrid(containerId, animals) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = animals.length ? animals.map(renderCard).join('') : '<div class="empty-state"><h3>Nenhum animal cadastrado</h3></div>';
+}
+
+function showSection(name) {
+  // Esconde todas as seções e mostra a selecionada
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const targetSection = document.getElementById('section-' + name);
+  if (targetSection) targetSection.classList.add('active');
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (name === 'lost') {
+    // Renderiza APENAS os fictícios de 'lostAnimals' + os vindos da tabela 'animals' (extraLost)
+    renderGrid('lost-grid', [...lostAnimals, ...extraLost]);
+  }
+  
+  if (name === 'adopt') {
+    // Renderiza APENAS os fictícios de 'adoptAnimals' + os da tabela 'adoption_animals' (extraAdopt)
+    renderGrid('adopt-grid', [...adoptAnimals, ...extraAdopt]); 
+  }
+}
+
+function filterAnimals(btn, species, type) {
+  // Remove classe ativa dos outros botões e adiciona neste
+  btn.closest('.filters').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Seleciona a base de dados correta baseada na aba (type)
+  let baseData = [];
+  if (type === 'lost') {
+    baseData = [...lostAnimals, ...extraLost].filter(a => a.type === 'lost' || a.status === 'lost');
+  } else {
+    baseData = [...adoptAnimals, ...extraAdopt].filter(a => a.type === 'adopt' || a.status === 'adopt');
+  }
+
+  // Aplica o filtro de espécie (Cão/Gato)
+  const filtered = species === 'all' ? baseData : baseData.filter(a => a.species === species);
+  
+  renderGrid(type === 'lost' ? 'lost-grid' : 'adopt-grid', filtered);
+}
+
+// Modal e Toast
+function openModal(encodedAnimal) {
+  const a = JSON.parse(decodeURIComponent(encodedAnimal));
+  
+  // Identifica se é um animal para adoção (ajuste conforme seu banco, ex: a.status === 'available')
+  const isAdoption = !a.owner_name && a.species; 
+  const isLost = a.type === 'lost' || a.status === 'lost';
+
+  // Título do Modal
+  document.getElementById('modal-title').textContent = isLost ? `Dados do Animal Perdido: ${a.name}` : `Adotar ${a.name}`;
+
+  // Lógica da Galeria
+  let galeriaHtml = '';
+  if (a.extra_images) {
+      const imagens = a.extra_images.split(',');
+      galeriaHtml = `
+        <div class="modal-gallery" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 15px;">
+          ${imagens.map(url => `
+            <img src="${url.trim()}" 
+                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid #eee;"
+                 onclick="window.open('${url.trim()}', '_blank')">
+          `).join('')}
+        </div>
+      `;
+  }
+
+  // Tratamento do Sexo (M -> Macho / F -> Fêmea)
+  const sexoFull = a.sex === 'M' ? 'Macho' : (a.sex === 'F' ? 'Fêmea' : 'Não informado');
+
+  // Montando o HTML condicionalmente
+  let detalhesHtml = `
+    <div style="text-align: left; line-height: 1.6;">
+      ${galeriaHtml}
+      
+      <p><strong>Espécie:</strong> ${a.species === 'dog' ? 'Cão' : 'Gato'}</p>
+      <p><strong>Raça:</strong> ${a.breed || 'Não informada'}</p>
+
+      ${isAdoption ? `
+        <!-- Campos exclusivos para ADOÇÃO -->
+        <p><strong>Idade:</strong> ${a.age || 'Não informada'}</p>
+        <p><strong>Sexo:</strong> ${sexoFull}</p>
+      ` : `
+        <!-- Campos exclusivos para PERDIDOS -->
+        <p><strong>Cor:</strong> ${a.color || 'Não informada'}</p>
+        <p><strong>Porte:</strong> ${a.size || 'Não informado'}</p>
+        <p><strong>Visto por último em:</strong> ${a.location}</p>
+        ${a.lost_date ? `<p><strong>Data do sumiço:</strong> ${new Date(a.lost_date).toLocaleDateString('pt-BR')}</p>` : ''}
+      `}
+
+      <p><strong>Descrição:</strong> ${a.description || a.desc || 'Sem detalhes adicionais.'}</p>
+      <hr>
+      <p><strong>Responsável:</strong> ${a.owner || a.owner_name || 'ONG APAP'}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-info').innerHTML = detalhesHtml;
+  document.getElementById('contact-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('contact-modal').classList.remove('open'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Submissão para o Supabase
+async function submitLost() {
+  const btn = document.querySelector('.submit-btn');
+  if (!btn) return;
+
+  const originalText = btn.innerText;
+  btn.innerText = 'A enviar...';
+  btn.disabled = true;
+
+  try {
+    // 1. Upload da Imagem
+    const file = document.getElementById('reg-photo').files[0];
+    let imageUrl = '';
+
+    if (file) {
+      // Usando Date.now() para garantir um nome único e evitar erro 400
+      const fileName = `${Date.now()}-${Math.random()}.${file.name.split('.').pop()}`;
+      
+      const { data, error: upError } = await _supabase.storage
+        .from('animal-photos')
+        .upload(fileName, file);
+
+      if (upError) throw upError;
+
+      const { data: pUrl } = _supabase.storage
+        .from('animal-photos')
+        .getPublicUrl(fileName);
+      
+      imageUrl = pUrl.publicUrl;
+    }
+
+    // 2. Verificar se a aprovação automática está ligada
+    const { data: config } = await _supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'auto_approve')
+      .maybeSingle(); // maybeSingle evita erro se a config não existir
+
+    const finalStatus = (config && config.value === true) ? 'approved' : 'pending';
+
+    // 3. Preparar os dados ANTES de limpar o formulário
+    const animalData = {
+      name: document.getElementById('reg-name').value,
+      species: document.getElementById('reg-species').value === "Cão" ? "dog" : "cat",
+      breed: document.getElementById('reg-breed').value,
+      color: document.getElementById('reg-color').value,
+      size: document.getElementById('reg-size').value,
+      location: document.getElementById('reg-location').value,
+      lost_date: document.getElementById('reg-date').value,
+      description: document.getElementById('reg-desc').value,
+      owner_name: document.getElementById('reg-owner').value,
+      owner_phone: document.getElementById('reg-phone').value,
+      image_url: imageUrl,
+      type: 'lost',
+      status: finalStatus
+    };
+
+    // 4. Enviar para o banco de dados (uma única vez)
+    const { error: insError } = await _supabase
+      .from('animals')
+      .insert([animalData]);
+
+    if (insError) throw insError;
+
+    // 5. Sucesso: Feedback e Limpeza
+    const msg = finalStatus === 'approved' 
+      ? '✅ Publicado com sucesso!' 
+      : '✅ Enviado para análise do administrador!';
+    
+    showToast(msg);
+
+    // 1. Limpar todos os inputs (incluindo selects, textarea e date)
+    const fieldsToClear = [
+      'reg-name', 'reg-species', 'reg-breed', 'reg-color', 
+      'reg-size', 'reg-date', 'reg-location', 'reg-desc', 
+      'reg-owner', 'reg-phone', 'reg-photo'
+    ];
+
+    fieldsToClear.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+
+    // 2. Resetar o Preview da Imagem (Visual)
+    const preview = document.getElementById('photo-preview');
+    const placeholder = document.getElementById('upload-placeholder');
+    
+    if (preview) {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+    if (placeholder) {
+      placeholder.style.display = 'block';
+    }
+
+    // ------------------------------------
+
+    setTimeout(() => showSection('home'), 2000);
+
+  } catch (err) {
+    console.error(err);
+    alert('Erro: ' + err.message);
+  } finally {
+    btn.innerText = originalText;
+    btn.disabled = false;
+  }
+}
+
+// Auxiliares Pix
+function selectAmount(btn, val) {
+  btn.closest('.amount-grid').querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('custom-amount-wrap').style.display = val === 'outro' ? 'block' : 'none';
+}
+
+function copyPix() {
+  navigator.clipboard.writeText('01.225.914/0001-13').then(() => showToast('✅ Chave Pix copiada!'));
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('contact-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Inicialização
+renderGrid('lost-grid', lostAnimals);
+renderGrid('adopt-grid', adoptAnimals);
+</script>
+</body>
+</html>

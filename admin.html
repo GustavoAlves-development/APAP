@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Pro — APAP</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #1a2744; --accent: #3498db; --success: #27ae60; --danger: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); margin: 0; display: flex; min-height: 100vh; }
+        
+        /* Sidebar Original */
+        .sidebar { 
+            width: 260px; 
+            height: 100vh; 
+            background: var(--navy); 
+            color: white; 
+            padding: 30px 20px; 
+            position: fixed; 
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar h2 { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.8; }
+        .nav-item { padding: 12px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item.active { background: var(--accent); }
+
+        /* Conteúdo Principal */
+        .main { 
+            margin-left: 260px; 
+            width: calc(100% - 260px); 
+            padding: 40px; 
+            transition: 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        /* Utilitários */
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Tabelas Responsivas */
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; min-width: 600px; background: white; border-radius: 12px; overflow: hidden; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+        .img-thumb { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid #eee; }
+        .btn-action { padding: 6px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+        .delete { background: #ffebee; color: var(--danger); }
+        .approve { background: #e8f5e9; color: var(--success); }
+        
+        /* Form Grid Responsivo */
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit;}
+        textarea { grid-column: span 3; height: 80px; resize: vertical; }
+        .btn-save { background: var(--success); color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; grid-column: span 3; font-weight: bold; }
+
+        /* Estilos do Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+            border: 1px solid #edf2f7;
+        }
+
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-info h3 { margin: 0; font-size: 0.9rem; color: #718096; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-info p { margin: 5px 0 0 0; font-size: 2rem; font-weight: 700; color: var(--navy); }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-pending { background: #fff5f5; color: #f56565; }
+        .icon-adopt { background: #f0fff4; color: #48bb78; }
+        .icon-system { background: #ebf8ff; color: #4299e1; }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--navy) 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner h1 { margin: 0; font-size: 1.8rem; }
+        .welcome-banner p { opacity: 0.8; margin: 10px 0 0 0; }
+
+        /* Botão Mobile */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* --- RESPONSIVIDADE (MOBILE) --- */
+        @media (max-width: 992px) {
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .main { margin-left: 0; width: 100%; padding: 20px; padding-top: 80px; }
+            .mobile-toggle { display: block; }
+            .form-grid { grid-template-columns: 1fr; }
+            textarea, .btn-save { grid-column: span 1; }
+            .dashboard-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+<div class="sidebar">
+    <h2>APAP Admin</h2>
+    <div class="nav-item active" onclick="showSection('dashboard')">🏠 Dashboard</div>
+    <div class="nav-item" onclick="showSection('perdidos')">🔍 Perdidos</div>
+    <div class="nav-item" onclick="showSection('adocao')">🐾 Gestão de Adoção</div>
+    <div class="nav-item" onclick="logout()" style="margin-top: 50px; color: #ff7675;">🚪 Sair</div>
+</div>
+
+<div class="main">
+    
+    <!-- Dashboard -->
+    <section id="section-dashboard" class="admin-section active">
+        <div class="welcome-banner">
+            <h1>Bem-vindo de volta, Admin 👋</h1>
+            <p>Aqui está o que está acontecendo na APAP hoje.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Pendentes (Perdidos)</h3>
+                    <p id="stat-pending">0</p>
+                </div>
+                <div class="stat-icon icon-pending">🔍</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Em Adoção</h3>
+                    <p id="stat-adopt">0</p>
+                </div>
+                <div class="stat-icon icon-adopt">🐾</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Status do Banco</h3>
+                    <p style="font-size: 1.2rem; color: #27ae60;">Conectado</p>
+                </div>
+                <div class="stat-icon icon-system">⚡</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <h2 style="font-size: 1.2rem; color: var(--navy); margin-bottom: 20px;">Ações Rápidas</h2>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button onclick="showSection('adocao')" style="background: white; border: 1px solid #ddd; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+                    ➕ Novo Animal para Adoção
+                </button>
+                <button onclick="showSection('perdidos')" style="background: white; border: 1px solid #ddd; padding: 15px 25px; border-radius: 10px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+                    👁️ Revisar Perdidos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perdidos -->
+    <section id="section-perdidos" class="admin-section">
+        <h1>Animais Perdidos</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th>Foto</th><th>Nome</th><th>Dono</th><th>Ações</th></tr>
+                </thead>
+                <tbody id="table-perdidos"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Adoção -->
+    <section id="section-adocao" class="admin-section">
+        <h1>Gestão de Adoção</h1>
+        
+        <div class="card">
+            <h3>Cadastrar para Adoção</h3>
+            <div class="form-grid">
+                <input type="text" id="ad-name" placeholder="Nome do Animal">
+                <input type="text" id="ad-age" placeholder="Idade (ex: 2 anos)">
+                <select id="ad-sex"><option value="M">Macho</option><option value="F">Fêmea</option></select>
+                <select id="ad-species"><option value="dog">Cão</option><option value="cat">Gato</option></select>
+                <input type="text" id="ad-breed" placeholder="Raça">
+                <input type="file" id="ad-photos" multiple accept="image/*">
+                <textarea id="ad-desc" placeholder="Temperamento, vacinas e história do animal..."></textarea>
+                <button class="btn-save" onclick="registerAdoption()">Salvar Animal na ONG</button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th>Fotos</th><th>Nome</th><th>Idade</th><th>Ações</th></tr>
+                </thead>
+                <tbody id="table-adocao"></tbody>
+            </table>
+        </div>
+    </section>
+    
+</div>
+
+<script>
+    const _supabase = supabase.createClient('https://sdmcrcewlctnamvloryh.supabase.co', 'sb_publishable_v7o90lAtxHKUf-I2HU0vjA_3esZ8B2v');
+
+    // --- AUTENTICAÇÃO ---
+    async function checkUser() {
+        const { data: { session } } = await _supabase.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+        }
+    }
+    checkUser();
+
+    // --- CONTROLE DE INTERFACE ---
+    function toggleSidebar() {
+        document.querySelector('.sidebar').classList.toggle('open');
+    }
+
+    function showSection(name) {
+        // Ocultar todas as seções e remover o estado 'active' do menu
+        document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        
+        // Mostrar a seção alvo
+        document.getElementById('section-' + name).classList.add('active');
+        
+        // Adicionar estado 'active' no menu clicado
+        if(event && event.currentTarget && event.currentTarget.classList.contains('nav-item')) {
+            event.currentTarget.classList.add('active');
+        }
+
+        // Fechar o menu lateral no mobile
+        if (window.innerWidth <= 992) {
+            document.querySelector('.sidebar').classList.remove('open');
+        }
+
+        // Carregar os dados correspondentes
+        if(name === 'perdidos') loadPerdidos();
+        if(name === 'adocao') loadAdocao();
+    }
+
+    // --- ESTATÍSTICAS DO DASHBOARD ---
+    async function loadStats() {
+        try {
+            const [resPerdidos, resAdocao] = await Promise.all([
+                _supabase.from('animals').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+                _supabase.from('adoption_animals').select('*', { count: 'exact', head: true })
+            ]);
+
+            if (resPerdidos.error) console.error("Erro Perdidos:", resPerdidos.error);
+            if (resAdocao.error) console.error("Erro Adoção:", resAdocao.error);
+
+            document.getElementById('stat-pending').innerText = resPerdidos.count ?? 0;
+            document.getElementById('stat-adopt').innerText = resAdocao.count ?? 0;
+
+        } catch (e) {
+            console.error("Erro crítico ao carregar estatísticas:", e);
+        }
+    }
+    loadStats();
+
+    // --- LÓGICA DE ADOÇÃO ---
+    async function registerAdoption() {
+        const btn = document.querySelector('.btn-save');
+        const files = document.getElementById('ad-photos').files;
+        const name = document.getElementById('ad-name').value;
+
+        if(!name || files.length === 0) return alert("Nome e foto são obrigatórios!");
+
+        btn.disabled = true;
+        btn.innerText = "Enviando...";
+        btn.style.opacity = "0.5";
+
+        try {
+            let urls = [];
+            for (let file of files) {
+                const fileName = `adoption/${Date.now()}_${file.name}`;
+                const { data, error: uploadError } = await _supabase.storage.from('animal-photos').upload(fileName, file);
+                
+                if (uploadError) throw uploadError;
+
+                if(data) {
+                    const { data: pUrl } = _supabase.storage.from('animal-photos').getPublicUrl(fileName);
+                    urls.push(pUrl.publicUrl);
+                }
+            }
+
+            const { error: dbError } = await _supabase.from('adoption_animals').insert([{
+                name, 
+                age: document.getElementById('ad-age').value,
+                description: document.getElementById('ad-desc').value,
+                sex: document.getElementById('ad-sex').value,
+                species: document.getElementById('ad-species').value,
+                breed: document.getElementById('ad-breed').value,
+                image_url: urls[0],
+                extra_images: urls.join(','),
+                status: 'available' 
+            }]);
+
+            if(dbError) throw dbError;
+
+            alert("Animal cadastrado com sucesso!");
+            location.reload();
+
+        } catch (err) {
+            alert("Erro na operação: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Salvar Animal na ONG";
+            btn.style.opacity = "1";
+        }
+    }
+
+    async function loadAdocao() {
+        const { data } = await _supabase.from('adoption_animals').select('*').order('created_at', {ascending: false});
+        const list = document.getElementById('table-adocao');
+        list.innerHTML = data.map(item => {
+            const totalPhotos = item.extra_images ? item.extra_images.split(',').length : 1;
+            return `
+                <tr>
+                    <td>
+                        <div style="position: relative; width: 50px;">
+                            <img src="${item.image_url}" class="img-thumb">
+                            <span style="position: absolute; bottom: -5px; right: -5px; background: var(--accent); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px;">
+                                ${totalPhotos}
+                            </span>
+                        </div>
+                    </td>
+                    <td><b>${item.name}</b></td>
+                    <td>${item.age}</td>
+                    <td>
+                        <button class="btn-action delete" onclick="deleteEntry('adoption_animals', '${item.id}')">Excluir</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // --- LÓGICA DE PERDIDOS ---
+    async function loadPerdidos() {
+        const { data } = await _supabase.from('animals').select('*').eq('type', 'lost');
+        const list = document.getElementById('table-perdidos');
+        list.innerHTML = data.map(item => `
+            <tr>
+                <td><img src="${item.image_url}" class="img-thumb"></td>
+                <td>${item.name}</td>
+                <td>${item.owner_name}</td>
+                <td>
+                    ${item.status === 'pending' ? `<button class="btn-action approve" onclick="approveLost('${item.id}')">Aprovar</button>` : ''}
+                    <button class="btn-action delete" onclick="deleteEntry('animals', '${item.id}')">Remover</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function approveLost(id) {
+        await _supabase.from('animals').update({ status: 'lost' }).eq('id', id);
+        loadPerdidos();
+    }
+
+    // --- UTILITÁRIOS ---
+    async function deleteEntry(table, id) {
+        if(confirm("Excluir definitivamente?")) {
+            console.log("Tentando excluir:", table, id);
+            const { error } = await _supabase.from(table).delete().eq('id', id.trim());
+
+            if (error) {
+                console.error("Erro do Supabase:", error.message);
+                alert("Erro ao deletar: " + error.message);
+            } else {
+                alert("Removido!");
+                location.reload();
+            }
+        }
+    }
+
+    async function logout() {
+        await _supabase.auth.signOut();
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>

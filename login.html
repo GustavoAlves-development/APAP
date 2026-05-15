@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — APAP Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #1a2744; --accent: #3498db; --bg: #f4f7f6; }
+        body { 
+            font-family: 'DM Sans', sans-serif; 
+            background: var(--bg); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .login-card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            width: 100%; 
+            max-width: 400px; 
+            text-align: center;
+        }
+        h1 { color: var(--navy); margin-bottom: 30px; font-size: 1.5rem; }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--navy); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover { background: var(--accent); }
+        .error { color: #e74c3c; font-size: 0.9rem; margin-bottom: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h1>Acesso Administrativo</h1>
+    <div id="error-msg" class="error">E-mail ou senha inválidos.</div>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit" id="loginBtn">Entrar no Painel</button>
+    </form>
+</div>
+
+<script>
+    // Use as mesmas credenciais do seu admin.html
+    const _supabase = supabase.createClient('https://sdmcrcewlctnamvloryh.supabase.co', 'sb_publishable_v7o90lAtxHKUf-I2HU0vjA_3esZ8B2v');
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('error-msg');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('loginBtn');
+
+        btn.innerText = "Verificando...";
+        btn.disabled = true;
+        errorMsg.style.display = 'none';
+
+        const { data, error } = await _supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            errorMsg.innerText = "Erro: " + error.message;
+            errorMsg.style.display = 'block';
+            btn.innerText = "Entrar no Painel";
+            btn.disabled = false;
+        } else {
+            // Sucesso! Vai para o admin
+            window.location.href = 'admin.html';
+        }
+    });
+</script>
+
+</body>
+</html>
